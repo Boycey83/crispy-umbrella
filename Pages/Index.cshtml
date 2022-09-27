@@ -1,0 +1,105 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Leeds Beer Quest";
+}
+
+@section scripts {
+    <script src="~/js/namespace.js"></script>
+    <script src="~/js/enums.js"></script>
+    <script src="~/js/venue.js"></script>
+    <script src="~/js/viewModel.js"></script>
+    <script>
+        $(document).ready(function() {
+            ko.applyBindings(new ab.beerQuest.viewModel());
+        })
+    </script>
+}
+
+<div class="container">
+    <div class="row">
+    <div class="col-3">
+        <h2>Sort</h2>
+        <select class="form-select mb-3" data-bind="options: sortOrderOptions, optionsText: 'text', optionsValue: 'value', value: sortOrder, optionsCaption: 'Choose a sort order...'"></select>
+        <h2>Filters</h2>
+        <p class="fw-bold">Categories</p>
+        <!-- ko foreach: categoryOptions -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox"
+                   data-bind="checked: $root.selectedCategories, value: value, attr: { id : 'category-option-' + $index() }">
+            <label class="form-check-label" data-bind="text: text, attr: { for : 'category-option-' + $index() }"></label>
+        </div>
+        <!-- /ko -->
+        <p class="fw-bold mt-3">Beer Rating</p>
+        <!-- ko foreach: ratingOptions -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="beer-rating"
+                    data-bind="checked: $root.beerRating, value: value, attr: { id : 'beer-option-' + $index() }">
+            <label class="form-check-label" data-bind="text: text, attr: { for : 'beer-option-' + $index() }"></label>
+        </div>
+        <!-- /ko -->
+        <p class="fw-bold mt-3">Atmosphere Rating</p>
+        <!-- ko foreach: ratingOptions -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="atmosphere-rating"
+                    data-bind="checked: $root.atmosphereRating, value: value, attr: { id : 'atmosphere-option-' + $index() }">
+            <label class="form-check-label" data-bind="text: text, attr: { for : 'atmosphere-option-' + $index() }"></label>
+        </div>
+        <!-- /ko -->
+        <p class="fw-bold mt-3">Amenities Rating</p>
+        <!-- ko foreach: ratingOptions -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="amenities-rating"
+                    data-bind="checked: $root.amenitiesRating, value: value, attr: { id : 'amenities-option-' + $index() }">
+            <label class="form-check-label" data-bind="text: text, attr: { for : 'amenities-option-' + $index() }"></label>
+        </div>
+        <!-- /ko -->
+        <p class="fw-bold mt-3">Value Rating</p>
+        <!-- ko foreach: ratingOptions -->
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="value-rating"
+                    data-bind="checked: $root.valueRating, value: value, attr: { id : 'value-option-' + $index() }">
+            <label class="form-check-label" data-bind="text: text, attr: { for : 'value-option-' + $index() }"></label>
+        </div>
+        <!-- /ko -->
+        <p class="fw-bold mt-3">Tags</p>
+        <!-- ko foreach: allAvailableTags -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox"
+                   data-bind="checked: $root.selectedTags, value: $data, attr: { id: 'tag-' + $index() }">
+            <label class="form-check-label" for="check-other-reviews"
+                   data-bind="text: $data, attr: { for: 'tag-' + $index() }">>
+            </label>
+        </div>
+        <!-- /ko-->
+    </div>
+    <div class="col-9" data-bind="foreach: venues">
+      <div class="card m-1">
+      <div class="card-body">
+        <h5 class="card-title" data-bind="text: name"></h5>
+        <h6 class="card-subtitle mb-2 text-muted" data-bind="text: address"></h6>
+        <div class="row my-3">
+            <div data-bind="foreach: tags">
+                <span class="border rounded p-1 bg-secondary bg-opacity-25" data-bind="text: $data"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <img class="img-thumbnail" data-bind="attr: { src: thumbnail }" />
+            </div>
+            <div class="col-8">
+                <div class="card-text d-block" data-bind="text: excerpt"></div>
+                <div class="fw-bold mt-3">Ratings</div>
+                <div class="card-text d-block" data-bind="text: 'Beer: ' + starsBeer()"></div>
+                <div class="card-text d-block" data-bind="text: 'Atmosphere: ' + starsAtmosphere()"></div>
+                <div class="card-text d-block" data-bind="text: 'Amenities: ' + starsAmenities()"></div>
+                <div class="card-text d-block" data-bind="text: 'Value ' + starsValue()"></div>
+            </div>
+        </div>
+        <a class="card-link" data-bind="attr: { href: url }">Visit Website</a>
+        <div class="card-text" data-bind="text: 'Tel: ' + phone()"></div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
